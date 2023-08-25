@@ -2,9 +2,9 @@
   "name": "@nuxtjs/apollo",
   "version": "5.0.0-alpha.6",
   "license": "MIT",
-  "repository": "https://github.com/nuxt-modules/apollo-module",
+  "repository": "https://github.com/GambaLabs/apollo",
   "homepage": "https://apollo.nuxtjs.org",
-  "type": "module",
+  "type": "git",
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
