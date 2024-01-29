@@ -29,7 +29,10 @@
 <script lang="ts" setup>
 const uploadAvatarMutation = gql`
   mutation uploadAvatar($file: Upload!) {
-    uploadAvatar(file: $file)
+    uploadAvatar(file: $file) {
+      user_avatar
+      full_url
+    }
   }
 `
 const data = ref<any>(null)
