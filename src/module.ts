@@ -1,6 +1,6 @@
 import { existsSync } from 'fs'
 import jiti from 'jiti'
-import { Ref } from 'vue'
+import { type Ref } from 'vue'
 import { defu } from 'defu'
 import { useLogger, addPlugin, addImports, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import GraphQLPlugin from '@rollup/plugin-graphql'
