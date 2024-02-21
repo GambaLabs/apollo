@@ -178,7 +178,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       ])
       : ApolloLink.from([
         errorLink,
-        ...(clientConfig.persistedQueries ? [optionalPersistedLink] : []),
         pusherLink,
         ...(!(wsLink)
           ? [httpLink]
