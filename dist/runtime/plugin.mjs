@@ -81,13 +81,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       return context.value;
     });
     let baseLink = csrfLink.concat(authLink).concat(contextLink);
-    let optionalPersistedLink;
+    let persistedLink;
     if (clientConfig.persistedQueries) {
-      const persistedLink = createPersistedQueryLink({ sha256, useGETForHashedQueries: true });
-      optionalPersistedLink = split(({ query }) => {
-        const definition = getMainDefinition(query);
-        return definition.kind === "OperationDefinition" && definition.operation === "query";
-      }, persistedLink);
+      persistedLink = createPersistedQueryLink({ sha256, useGETForHashedQueries: true });
     }
     const httpEndLink = createUploadLink({
       ...clientConfig?.httpLinkOptions && clientConfig.httpLinkOptions,
@@ -143,9 +139,17 @@ export default defineNuxtPlugin((nuxtApp) => {
     const link = pusherLink ? ApolloLink.from([
       errorLink,
       baseLink,
-      ...clientConfig.persistedQueries ? [optionalPersistedLink] : [],
       pusherLink,
-      httpEndLink
+      ...clientConfig.persistedQueries ? [
+        split(
+          ({ query }) => {
+            const definition = getMainDefinition(query);
+            return definition.kind === "OperationDefinition" && definition.operation === "subscription";
+          },
+          persistedLink.concat(httpEndLink),
+          httpEndLink
+        )
+      ] : [httpEndLink]
     ]) : ApolloLink.from([
       errorLink,
       ...clientConfig.persistedQueries ? [optionalPersistedLink] : [],
