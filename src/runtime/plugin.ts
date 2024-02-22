@@ -169,7 +169,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           ? [
               split(({ query }) => {
                 const definition = getMainDefinition(query)
-                return (definition.kind === 'OperationDefinition' && definition.operation === 'subscription')
+                return (definition.kind === 'OperationDefinition' && definition.operation === 'query')
               },
               ApolloLink.from([persistedLink, httpEndLink]),
               httpEndLink)
