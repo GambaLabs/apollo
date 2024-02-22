@@ -171,14 +171,13 @@ export default defineNuxtPlugin((nuxtApp) => {
                 const definition = getMainDefinition(query)
                 return (definition.kind === 'OperationDefinition' && definition.operation === 'subscription')
               },
-              persistedLink.concat(httpEndLink),
+              ApolloLink.from([persistedLink, httpEndLink]),
               httpEndLink)
             ]
           : [httpEndLink])
       ])
       : ApolloLink.from([
         errorLink,
-        pusherLink,
         ...(!(wsLink)
           ? [httpLink]
           : [
