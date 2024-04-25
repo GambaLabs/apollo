@@ -80,7 +80,7 @@ export const useApollo = () => {
 
     if (conf?.tokenStorage === 'cookie') {
       const cookieOpts = (client && conf?.cookieAttributes) || NuxtApollo?.cookieAttributes
-
+      console.log('cookieOpts', cookieOpts)
       const cookie = useCookie(tokenName, cookieOpts)
 
       if (!cookie.value && mode === 'logout') { return }
