@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.18](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.17...v6.0.0-alpha.18) (2024-04-25)
+
+
+### Features
+
+* add basic support for vue options api ([#575](https://github.com/GambaLabs/apollo/issues/575)) ([9d8900f](https://github.com/GambaLabs/apollo/commit/9d8900f59c1e14e2b6fa2f6b1d81da9241aaecd1))
+* add context to query ([#549](https://github.com/GambaLabs/apollo/issues/549)) ([da75426](https://github.com/GambaLabs/apollo/commit/da75426df0fe77845c642d8d08fd53804be19357))
+* enable async query variable reactivity and type hints for Apollo client ids ([#597](https://github.com/GambaLabs/apollo/issues/597)) ([eb355e5](https://github.com/GambaLabs/apollo/commit/eb355e5401e575b7f9903fcf9c02359c7f76bd73))
+
+
+### Bug Fixes
+
+* add missing key in record ([#604](https://github.com/GambaLabs/apollo/issues/604)) ([6188a17](https://github.com/GambaLabs/apollo/commit/6188a17cfa7843f843f96a84949e053d8035c1d1))
+* call unref on query variables ([#601](https://github.com/GambaLabs/apollo/issues/601)) ([714b587](https://github.com/GambaLabs/apollo/commit/714b587e810acf6e4aa7c84b5fafed2599f0ad07))
+* ensure `useCookie` called with context ([3cb6444](https://github.com/GambaLabs/apollo/commit/3cb64446e990d62783b95f8eeb1864b4f6ca6a93)), closes [#524](https://github.com/GambaLabs/apollo/issues/524)
+* module types generation ([#570](https://github.com/GambaLabs/apollo/issues/570)) ([3d82fce](https://github.com/GambaLabs/apollo/commit/3d82fce50c9eccceb1ec5f4023779ef0391cac2d))
+* passing headers in websocket connectionParams ([#577](https://github.com/GambaLabs/apollo/issues/577)) ([56960b1](https://github.com/GambaLabs/apollo/commit/56960b1914ed1c362754f8c9844b7139d18db061))
+* properly export `defineApolloClient` utility ([ec01878](https://github.com/GambaLabs/apollo/commit/ec01878456d9a6fc06c074d7014b638a9530da8f)), closes [#608](https://github.com/GambaLabs/apollo/issues/608)
+* support function expressions in module config ([#537](https://github.com/GambaLabs/apollo/issues/537)) ([1d6e1f7](https://github.com/GambaLabs/apollo/commit/1d6e1f71164167ead8fac7778e2d80737275b48d))
+* TAsyncQuery type and context value as 4th argument ([#571](https://github.com/GambaLabs/apollo/issues/571)) ([67623b0](https://github.com/GambaLabs/apollo/commit/67623b023530bcba6ed682d7bac185d98d10969f))
+* transpile tslib ([04c0b14](https://github.com/GambaLabs/apollo/commit/04c0b14922acdd6b629cf11990b38e29582cd626))
+
 ## [6.0.0-alpha.17](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.16...v6.0.0-alpha.17) (2024-02-22)
 
 
