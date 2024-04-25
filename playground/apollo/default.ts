@@ -1,14 +1,4 @@
-import { ApolloLink } from '@apollo/client/core'
-import { defineApolloClient } from '@nuxtjs/apollo'
-
-const csrfLink = () => new ApolloLink((operation, forward) => {
-  operation.setContext(() => ({
-    headers: {
-      'X-CUSTOM-HEADER': 'custom1'
-    }
-  }))
-  return forward(operation)
-})
+import { defineApolloClient } from '@nuxtjs/apollo/config'
 
 export default defineApolloClient({
   // The GraphQL endpoint.
