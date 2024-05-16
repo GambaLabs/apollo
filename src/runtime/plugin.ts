@@ -145,23 +145,28 @@ export default defineNuxtPlugin((nuxtApp) => {
     let pusherLink: PusherLink | null = null
 
     if (process.client && clientConfig.pusher) {
-      pusherLink = new PusherLink({
-        pusher: new Pusher(clientConfig.pusher.pusherAppKey, {
-          wsHost: clientConfig.pusher.wsHost,
-          wsPort: clientConfig.pusher.wsPort,
-          forceTLS: clientConfig.pusher.forceTLS,
-          disableStats: true,
-          enabledTransports: ['ws', 'wss'],
-          cluster: clientConfig.pusher.cluster,
-          channelAuthorization: {
-            endpoint: clientConfig.pusher.channelEndpoint,
-            headersProvider () {
-              const { token: csrfToken } = nuxtApp.$csrfToken()
-              const { token: authToken } = nuxtApp.$authToken()
-              return { 'X-CSRF-Token': csrfToken.value, authorization: `Bearer ${authToken.value}` }
-            }
+      const pusherObj = new Pusher(clientConfig.pusher.pusherAppKey, {
+        wsHost: clientConfig.pusher.wsHost,
+        wsPort: clientConfig.pusher.wsPort,
+        forceTLS: clientConfig.pusher.forceTLS,
+        disableStats: true,
+        enabledTransports: ['ws', 'wss'],
+        cluster: clientConfig.pusher.cluster,
+        activityTimeout: 300000,
+        channelAuthorization: {
+          endpoint: clientConfig.pusher.channelEndpoint,
+          headersProvider () {
+            const { token: csrfToken } = nuxtApp.$csrfToken()
+            const { token: authToken } = nuxtApp.$authToken()
+            return { 'X-CSRF-Token': csrfToken.value, authorization: `Bearer ${authToken.value}` }
           }
-        })
+        }
+      })
+      pusherObj.connection.bind('disconnected', () => {
+        pusherObj.connect()
+      })
+      pusherLink = new PusherLink({
+        pusher: pusherObj
       })
     }
     const errorLink = onError((err) => {
