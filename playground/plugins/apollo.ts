@@ -69,18 +69,17 @@ export default defineNuxtPlugin((nuxtApp) => {
     authToken.value = '<secret_token>'
   })
 
-  nuxtApp.hook('apollo:csrf', async ({ client, token }) => {
+  nuxtApp.hook('apollo:csrf', async ({ client, token, forceUpdate }) => {
     if (process.server) { return }
     // Check if client is app graphql, not hygraph
     if (client !== 'gamba') { return }
     // NOTE: we have only one client, so no need to check client here
     const existingToken = csrfToken.value
 
-    if (existingToken) {
+    if (existingToken && !forceUpdate) {
       token.value = existingToken
       return
     }
-
     const res = await fetchCsrf.catch(() => false)
     if (!res) {
       console.error('Failed to fetch csrf token')
