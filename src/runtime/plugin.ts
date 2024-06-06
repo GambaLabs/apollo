@@ -68,9 +68,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     })
 
-    const getCsrfToken = async () => {
+    const getCsrfToken = async (forceUpdate: boolean = false) => {
       const token = ref<string | null>()
-      await nuxtApp.callHook('apollo:csrf', { token, client: key })
+      await nuxtApp.callHook('apollo:csrf', { token, client: key, forceUpdate })
 
       return token.value
     }
@@ -109,10 +109,36 @@ export default defineNuxtPlugin((nuxtApp) => {
     //   uri: (process.client && clientConfig.browserHttpEndpoint) || clientConfig.httpEndpoint,
     //   headers: { ...(clientConfig?.httpLinkOptions?.headers || {}) }
     // })
+
+    /**
+     * @author vadymgamba
+     * @description custom fetch to handle many error codes
+     * @param uri string
+     * @param options fetchOptions
+     * @param blocked1stCall if it's 2nd call or not
+     * @returns fetch response
+     */
+    const customFetch = async (uri: string, options, blocked1stCall = false) => {
+      const response = await fetch(uri, options)
+      if (response.status === 419) {
+        // if the status code is 419, refresh csrf token forcibly.
+        const token = await getCsrfToken(true)
+        if (token && !blocked1stCall) {
+          // if first call is blocked with 419 status code, and getting csrf token again and then call request again.
+          return customFetch(uri, options, !blocked1stCall)
+        } else {
+          // This is for sending an error object when the request is getting 419 error if the token is not valuable or even if calling 2nd times
+          nuxtApp.callHook('apollo:error', { networkError: { bodyText: 'Session Expired', statusCode: 419 } })
+        }
+      }
+      return response
+    }
+
     const httpEndLink = createUploadLink({
       ...(clientConfig?.httpLinkOptions && clientConfig.httpLinkOptions),
       uri: (process.client && clientConfig.browserHttpEndpoint) || clientConfig.httpEndpoint,
-      headers: { ...(clientConfig?.httpLinkOptions?.headers || {}) }
+      headers: { ...(clientConfig?.httpLinkOptions?.headers || {}) },
+      fetch: customFetch // use custom fetch instead of default fetch to handle status code
     })
     const httpLink = baseLink.concat(httpEndLink)
     let wsLink: GraphQLWsLink | null = null
@@ -145,23 +171,37 @@ export default defineNuxtPlugin((nuxtApp) => {
     let pusherLink: PusherLink | null = null
 
     if (process.client && clientConfig.pusher) {
-      pusherLink = new PusherLink({
-        pusher: new Pusher(clientConfig.pusher.pusherAppKey, {
-          wsHost: clientConfig.pusher.wsHost,
-          wsPort: clientConfig.pusher.wsPort,
-          forceTLS: clientConfig.pusher.forceTLS,
-          disableStats: true,
-          enabledTransports: ['ws', 'wss'],
-          cluster: clientConfig.pusher.cluster,
-          channelAuthorization: {
-            endpoint: clientConfig.pusher.channelEndpoint,
-            headersProvider () {
-              const { token: csrfToken } = nuxtApp.$csrfToken()
-              const { token: authToken } = nuxtApp.$authToken()
-              return { 'X-CSRF-Token': csrfToken.value, authorization: `Bearer ${authToken.value}` }
-            }
+      const pusherObj = new Pusher(clientConfig.pusher.pusherAppKey, {
+        wsHost: clientConfig.pusher.wsHost,
+        wsPort: clientConfig.pusher.wsPort,
+        forceTLS: clientConfig.pusher.forceTLS,
+        disableStats: true,
+        enabledTransports: ['ws', 'wss'],
+        cluster: clientConfig.pusher.cluster,
+        activityTimeout: clientConfig.pusher.activityTimeout,
+        reconnect: {
+          auto: true
+        },
+        channelAuthorization: {
+          endpoint: clientConfig.pusher.channelEndpoint,
+          headersProvider () {
+            const { token: csrfToken } = nuxtApp.$csrfToken()
+            const { token: authToken } = nuxtApp.$authToken()
+            return { 'X-CSRF-Token': csrfToken.value, authorization: `Bearer ${authToken.value}` }
           }
-        })
+        }
+      })
+
+      // connect pusherobj when user active the tab on browser and pusher is disconnected
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible' && pusherObj.connection.state !== 'connected') {
+          pusherObj.connect()
+        }
+      }
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+
+      pusherLink = new PusherLink({
+        pusher: pusherObj
       })
     }
     const errorLink = onError((err) => {

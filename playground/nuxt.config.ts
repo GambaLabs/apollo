@@ -40,7 +40,7 @@ export default defineNuxtConfig({
         csrfHeader: 'X-CSRF-TOKEN'
       },
       gamba: {
-        httpEndpoint: `${process.env.GRAPHQL_BASE_URL}/@`,
+        httpEndpoint: `${process.env.GRAPHQL_BASE_URL}/@/1`,
         httpLinkOptions: {
           credentials: 'include'
         },
@@ -51,7 +51,8 @@ export default defineNuxtConfig({
           channelEndpoint: `${process.env.GRAPHQL_BASE_URL}/broadcasting/auth`,
           pusherAppKey: process.env.PUSHER_APP_KEY!,
           forceTLS: !!process.env.PUSHER_FORCE_TLS!,
-          wsPort: process.env.PUSHER_WS_PORT!
+          activityTimeout: Number(process.env.PUSHER_ACTIVITY_TIMEOUT)!,
+          wsPort: Number(process.env.PUSHER_WS_PORT)!
         }
       }
     }

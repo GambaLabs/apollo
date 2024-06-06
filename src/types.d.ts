@@ -12,6 +12,7 @@ export type Pusher = {
   forceTLS: boolean;
   channelEndpoint: string;
   pusherAppKey: string;
+  activityTimeout: number;
 }
 
 export type ClientConfig = {
