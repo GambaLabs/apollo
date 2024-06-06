@@ -191,7 +191,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           }
         }
       })
-      
+
       // connect pusherobj when user active the tab on browser and pusher is disconnected
       const handleVisibilityChange = () => {
         if (document.visibilityState === 'visible' && pusherObj.connection.state !== 'connected') {
