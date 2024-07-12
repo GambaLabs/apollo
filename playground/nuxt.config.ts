@@ -40,7 +40,7 @@ export default defineNuxtConfig({
         csrfHeader: 'X-CSRF-TOKEN'
       },
       gamba: {
-        httpEndpoint: `${process.env.GRAPHQL_BASE_URL}/@/1`,
+        httpEndpoint: `${process.env.GRAPHQL_BASE_URL}/@`,
         httpLinkOptions: {
           credentials: 'include'
         },
