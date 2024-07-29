@@ -122,6 +122,13 @@ export type ClientConfig = {
   csrfHeader?: string
 
   /**
+   * Request maximum timeout.
+   * @type {number}
+   * @default 7000
+   */
+  requestMaxTimeout?: number
+
+  /**
    * Enable automatic persisted queries.
    * @type {boolean}
    * @default false
@@ -176,6 +183,13 @@ export interface NuxtApolloConfig<T = false> {
    * @default "X-CSRF-TOKEN"
    */
   csrfHeader?: string;
+
+  /**
+   * Request maximum timeout.
+   * @type {number}
+   * @default 7000
+   */
+  requestMaxTimeout?: number
 
   /**
    * Specify if the auth token should be stored in `cookie` or `localStorage`.

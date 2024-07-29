@@ -39,7 +39,8 @@ export default defineNuxtModule<ModuleOptions>({
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
     },
-    clientAwareness: false
+    clientAwareness: false,
+    requestMaxTimeout: 7000
   },
   async setup (options, nuxt) {
     if (!options.clients || !Object.keys(options.clients).length) {
@@ -83,6 +84,7 @@ export default defineNuxtModule<ModuleOptions>({
         v.csrfHeader = v?.csrfHeader || options.csrfHeader
         v.tokenName = v?.tokenName || `apollo:${k}.token`
         v.tokenStorage = v?.tokenStorage || options.tokenStorage
+        v.requestMaxTimeout = v?.requestMaxTimeout || options.requestMaxTimeout
         if (v.cookieAttributes) { v.cookieAttributes = defu(v?.cookieAttributes, options.cookieAttributes) }
 
         v.defaultOptions = v?.defaultOptions || options.defaultOptions

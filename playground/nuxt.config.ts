@@ -45,6 +45,7 @@ export default defineNuxtConfig({
           credentials: 'include'
         },
         persistedQueries: false,
+        requestMaxTimeout: 50000,
         pusher: {
           wsHost: process.env.PUSHER_WS_HOST!,
           cluster: process.env.PUSHER_CLUSTER!,

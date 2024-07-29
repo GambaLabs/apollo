@@ -118,23 +118,40 @@ export default defineNuxtPlugin((nuxtApp) => {
      * @param blocked1stCall if it's 2nd call or not
      * @returns fetch response
      */
-    const customFetch = async (uri: string, options, blocked1stCall = false) => {
-      const response = await fetch(uri, options)
-      if (response.status === 419) {
-        // if the status code is 419, refresh csrf token forcibly.
-        const token = await getCsrfToken(true)
-        if (token && !blocked1stCall) {
-          // if first call is blocked with 419 status code, and getting csrf token again and then call request again.
-          return customFetch(uri, options, !blocked1stCall)
-        } else {
-          // This is for sending an error object when the request is getting 419 error if the token is not valuable or even if calling 2nd times
-          nuxtApp.callHook('apollo:error', { networkError: { bodyText: 'Session Expired', statusCode: 419 } })
-        }
-      } else if (response.status > 300) {
-        const errorText = await response.text()
-        nuxtApp.callHook('apollo:error', { networkError: { bodyText: errorText, statusCode: response.status } })
-      }
-      return response
+    const customFetch = async (uri: string, options) => {
+      return new Promise((resolve, reject) => {
+        let handledByTimeout = false
+
+        const timer = setTimeout(() => {
+          handledByTimeout = true
+          nuxtApp.callHook('apollo:error', {
+            networkError: {
+              bodyText: `Request Exceeded timeout ${clientConfig.requestMaxTimeout}ms`,
+              statusCode: '(failed)net::ERR_NAME_NOT_RESOLVED',
+              options
+            }
+          })
+          reject(new Error(`Request Exceeded timeout ${clientConfig.requestMaxTimeout}ms`))
+        }, clientConfig.requestMaxTimeout)
+
+        fetch(uri, options).then(async (response) => {
+          clearTimeout(timer)
+
+          if (response.status >= 300) {
+            const errorText = await response.clone().text()
+            nuxtApp.callHook('apollo:error', { networkError: { bodyText: errorText, statusCode: response.status, options } })
+          }
+          resolve(response)
+        }).catch((e) => {
+          // skip if caught by timeout exceed
+          if (handledByTimeout) { return }
+
+          clearTimeout(timer)
+
+          nuxtApp.callHook('apollo:error', { networkError: { bodyText: 'Failed to fetch', statusCode: '(failed)net::ERR_NAME_NOT_RESOLVED', options } })
+          reject(e)
+        })
+      })
     }
 
     const httpEndLink = createUploadLink({

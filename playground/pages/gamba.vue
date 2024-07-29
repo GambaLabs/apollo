@@ -4,9 +4,9 @@ import GambaDemo from '~/components/GambaDemo.vue'
 <template>
   <div id="wrapper">
     <main class="p-4">
-        <ClientOnly>
-      <GambaDemo />
-    </ClientOnly>
+      <ClientOnly>
+        <GambaDemo />
+      </ClientOnly>
     </main>
   </div>
 </template>
