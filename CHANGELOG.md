@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.22](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.21...v6.0.0-alpha.22) (2024-07-29)
+
+
+### Features
+
+* **fetch:** timeout, network error handle ([d54509e](https://github.com/GambaLabs/apollo/commit/d54509ef90b71f20663727e71a1be283a83d7b37))
+
 ## [6.0.0-alpha.21](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.20...v6.0.0-alpha.21) (2024-07-12)
 
 ## [6.0.0-alpha.20](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.19...v6.0.0-alpha.20) (2024-06-06)
