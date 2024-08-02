@@ -49,8 +49,8 @@ export default defineNuxtModule<ModuleOptions>({
       },
       attempts: {
         max: 5,
-        retryIf (error, operation) {
-          return !error
+        retryIf: (error, operation) => {
+          return !!error
         }
       }
     }
