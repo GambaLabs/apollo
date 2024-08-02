@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.26](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.25...v6.0.0-alpha.26) (2024-08-02)
+
+
+### Bug Fixes
+
+* **fetch:** abort reason object ([594fdce](https://github.com/GambaLabs/apollo/commit/594fdce03e15c2a8c815ffa3efc71f87ce38be61))
+* **gambaFetch:** clean up comments, variables ([88ff9f9](https://github.com/GambaLabs/apollo/commit/88ff9f901c516ba2473f1e70c6e1c929414aeee3))
+
 ## [6.0.0-alpha.25](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.24...v6.0.0-alpha.25) (2024-08-02)
 
 ## [6.0.0-alpha.24](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.23...v6.0.0-alpha.24) (2024-08-02)
