@@ -40,6 +40,9 @@ class PusherLink extends ApolloLink {
           }
           const event = data?.extensions?.lighthouse_subscriptions.event ?? 'lighthouse-subscription'
           this.subscribeToChannel(subscriptionChannel, event, observer)
+        },
+        error: (networkError) => {
+          observer.error(networkError)
         }
       })
 

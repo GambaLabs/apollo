@@ -8,6 +8,7 @@ import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
 import { sha256 } from 'crypto-hash'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
+import { RetryLink } from '@apollo/client/link/retry'
 import { setContext } from '@apollo/client/link/context'
 import Pusher from 'pusher-js'
 import type { ClientConfig, ErrorResponse } from '../types'
@@ -118,39 +119,19 @@ export default defineNuxtPlugin((nuxtApp) => {
      * @param blocked1stCall if it's 2nd call or not
      * @returns fetch response
      */
-    const customFetch = async (uri: string, options) => {
-      return new Promise((resolve, reject) => {
-        let handledByTimeout = false
+    const gambaFetch = async (uri: string, options) => {
+      let handledByTimeout = false
+      const abortController = new AbortController()
+      const timer = setTimeout(() => {
+        handledByTimeout = true
+        abortController.abort(`Request exceeded timeout ${clientConfig.requestMaxTimeout / 1000} seconds`)
+      }, clientConfig.requestMaxTimeout)
 
-        const timer = setTimeout(() => {
-          handledByTimeout = true
-          nuxtApp.callHook('apollo:error', {
-            networkError: {
-              bodyText: `Request Exceeded timeout ${clientConfig.requestMaxTimeout}ms`,
-              statusCode: '(failed)net::ERR_NAME_NOT_RESOLVED',
-              options
-            }
-          })
-          reject(new Error(`Request Exceeded timeout ${clientConfig.requestMaxTimeout}ms`))
-        }, clientConfig.requestMaxTimeout)
-
-        fetch(uri, options).then(async (response) => {
-          clearTimeout(timer)
-
-          if (response.status >= 300) {
-            const errorText = await response.clone().text()
-            nuxtApp.callHook('apollo:error', { networkError: { bodyText: errorText, statusCode: response.status, options } })
-          }
-          resolve(response)
-        }).catch((e) => {
-          // skip if caught by timeout exceed
-          if (handledByTimeout) { return }
-
-          clearTimeout(timer)
-
-          nuxtApp.callHook('apollo:error', { networkError: { bodyText: 'Failed to fetch', statusCode: '(failed)net::ERR_NAME_NOT_RESOLVED', options } })
-          reject(e)
-        })
+      return fetch(uri, {
+        ...options,
+        signal: abortController.signal
+      }).finally(() => {
+        clearTimeout(timer)
       })
     }
 
@@ -158,7 +139,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       ...(clientConfig?.httpLinkOptions && clientConfig.httpLinkOptions),
       uri: (process.client && clientConfig.browserHttpEndpoint) || clientConfig.httpEndpoint,
       headers: { ...(clientConfig?.httpLinkOptions?.headers || {}) },
-      fetch: customFetch // use custom fetch instead of default fetch to handle status code
+      fetch: gambaFetch
     })
     const httpLink = baseLink.concat(httpEndLink)
     let wsLink: GraphQLWsLink | null = null
@@ -228,6 +209,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       nuxtApp.callHook('apollo:error', err)
     })
 
+    const retryLink = new RetryLink({
+      ...clientConfig.retryOptions
+    })
+
     const link = pusherLink
       ? ApolloLink.from([
         errorLink,
@@ -239,15 +224,15 @@ export default defineNuxtPlugin((nuxtApp) => {
                 const definition = getMainDefinition(query)
                 return (definition.kind === 'OperationDefinition' && definition.operation === 'query')
               },
-              ApolloLink.from([persistedLink, httpEndLink]),
-              httpEndLink)
+              ApolloLink.from([persistedLink, retryLink, httpEndLink]),
+              ApolloLink.from([retryLink, httpEndLink]))
             ]
-          : [httpEndLink])
+          : [retryLink, httpEndLink])
       ])
       : ApolloLink.from([
         errorLink,
         ...(!(wsLink)
-          ? [httpLink]
+          ? [retryLink, httpLink]
           : [
               ...(clientConfig?.websocketsOnly
                 ? [wsLink]
@@ -257,7 +242,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                       return (definition.kind === 'OperationDefinition' && definition.operation === 'subscription')
                     },
                     wsLink,
-                    httpLink)
+                    ApolloLink.from([retryLink, httpLink]))
                   ])
             ])
       ])

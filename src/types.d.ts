@@ -15,6 +15,18 @@ export type Pusher = {
   activityTimeout: number;
 }
 
+export type RetryOptions = {
+  delay: {
+    initial: number
+    max: number
+    jitter: boolean
+  }
+  attempts: {
+    max: number
+    retryIf: (error: any, operation: any) => boolean
+  }
+}
+
 export type ClientConfig = {
   /**
    * The GraphQL endpoint.
@@ -134,6 +146,12 @@ export type ClientConfig = {
    * @default false
    */
   persistedQueries?: boolean
+
+  /**
+   * options for Retry link
+   */
+
+  retryOptions?: Partial<RetryOptions>
 };
 
 export interface NuxtApolloConfig<T = false> {
@@ -212,4 +230,9 @@ export interface NuxtApolloConfig<T = false> {
    * @default false
    */
   clientAwareness?: boolean
+
+  /**
+   * options for Retry link
+   */
+  retryOptions?: Partial<RetryOptions>
 }

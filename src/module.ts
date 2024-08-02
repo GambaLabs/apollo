@@ -40,7 +40,20 @@ export default defineNuxtModule<ModuleOptions>({
       sameSite: 'lax'
     },
     clientAwareness: false,
-    requestMaxTimeout: 7000
+    requestMaxTimeout: 7000,
+    retryOptions: {
+      delay: {
+        initial: 300,
+        max: Infinity,
+        jitter: true
+      },
+      attempts: {
+        max: 5,
+        retryIf (error, operation) {
+          return !error
+        }
+      }
+    }
   },
   async setup (options, nuxt) {
     if (!options.clients || !Object.keys(options.clients).length) {
@@ -85,6 +98,8 @@ export default defineNuxtModule<ModuleOptions>({
         v.tokenName = v?.tokenName || `apollo:${k}.token`
         v.tokenStorage = v?.tokenStorage || options.tokenStorage
         v.requestMaxTimeout = v?.requestMaxTimeout || options.requestMaxTimeout
+        v.retryOptions = v?.retryOptions || options.retryOptions
+
         if (v.cookieAttributes) { v.cookieAttributes = defu(v?.cookieAttributes, options.cookieAttributes) }
 
         v.defaultOptions = v?.defaultOptions || options.defaultOptions
