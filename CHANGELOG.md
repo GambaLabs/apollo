@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.24](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.23...v6.0.0-alpha.24) (2024-08-02)
+
+
+### Features
+
+* **retry-link:** add support RetryLink ([4126b71](https://github.com/GambaLabs/apollo/commit/4126b71ce527df8904cdb6e84e792e23748b340c))
+
 ## [6.0.0-alpha.23](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.22...v6.0.0-alpha.23) (2024-07-29)
 
 ## [6.0.0-alpha.22](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.21...v6.0.0-alpha.22) (2024-07-29)
