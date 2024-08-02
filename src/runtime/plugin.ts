@@ -124,7 +124,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       const abortController = new AbortController()
       const timer = setTimeout(() => {
         handledByTimeout = true
-        abortController.abort(`Request exceeded timeout ${clientConfig.requestMaxTimeout / 1000} seconds`)
+        abortController.abort({
+          message: `Request exceeded timeout ${clientConfig.requestMaxTimeout / 1000} seconds`,
+          name: 'timeout'
+        })
       }, clientConfig.requestMaxTimeout)
 
       return fetch(uri, {
