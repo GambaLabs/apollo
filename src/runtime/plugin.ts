@@ -112,18 +112,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     // })
 
     /**
-     * @author vadymgamba
-     * @description custom fetch to handle many error codes
+     * @author vadymgamba & ashot
+     * @description custom fetch to handle timeout
      * @param uri string
      * @param options fetchOptions
-     * @param blocked1stCall if it's 2nd call or not
      * @returns fetch response
      */
     const gambaFetch = async (uri: string, options) => {
-      let handledByTimeout = false
       const abortController = new AbortController()
       const timer = setTimeout(() => {
-        handledByTimeout = true
         abortController.abort({
           message: `Request exceeded timeout ${clientConfig.requestMaxTimeout / 1000} seconds`,
           name: 'timeout'
