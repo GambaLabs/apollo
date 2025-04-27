@@ -130,6 +130,9 @@ export default defineNuxtPlugin((nuxtApp) => {
           // This is for sending an error object when the request is getting 419 error if the token is not valuable or even if calling 2nd times
           nuxtApp.callHook('apollo:error', { networkError: { bodyText: 'Session Expired', statusCode: 419 } })
         }
+      } else if (response.status > 300) {
+        const errorText = await response.text()
+        nuxtApp.callHook('apollo:error', { networkError: { bodyText: errorText, statusCode: response.status } })
       }
       return response
     }

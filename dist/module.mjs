@@ -5,7 +5,7 @@ import { useLogger, defineNuxtModule, createResolver, addTemplate, addPlugin, ad
 import GraphQLPlugin from '@rollup/plugin-graphql';
 
 const name = "@gambalabs/apollo";
-const version = "6.0.0-alpha.19";
+const version = "6.0.0-alpha.20";
 
 const serializeConfig = (obj) => {
   if (typeof obj === "function") {
