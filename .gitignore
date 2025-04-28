@@ -10,3 +10,4 @@ coverage
 .nuxt
 .output
 .env
+dist
