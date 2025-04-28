@@ -90,9 +90,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     })
 
-    const contextLink = setContext(async (_, prevContext: DefaultContext) => {
+    const contextLink = setContext(async (graphqlRequest, prevContext: DefaultContext) => {
       const context = ref<null | DefaultContext>(null)
-      await nuxtApp.callHook('apollo:link', { prevContext, context, client: key })
+      await nuxtApp.callHook('apollo:link', { prevContext, context, client: key, graphqlRequest })
 
       if (!context.value) { return }
 
