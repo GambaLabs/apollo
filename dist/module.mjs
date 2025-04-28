@@ -5,7 +5,7 @@ import { useLogger, defineNuxtModule, createResolver, addTemplate, addPlugin, ad
 import GraphQLPlugin from '@rollup/plugin-graphql';
 
 const name = "@gambalabs/apollo";
-const version = "6.0.0-alpha.27";
+const version = "6.0.0-alpha.28";
 
 const serializeConfig = (obj) => {
   if (typeof obj === "function") {
@@ -56,8 +56,8 @@ const module = defineNuxtModule({
       },
       attempts: {
         max: 5,
-        retryIf(error, operation) {
-          return !error;
+        retryIf: (error, operation) => {
+          return !!error;
         }
       }
     }
