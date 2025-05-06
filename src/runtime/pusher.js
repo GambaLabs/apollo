@@ -33,7 +33,7 @@ class PusherLink extends ApolloLink {
       const { channel, event } = operation.getContext()
 
       if (isSubscription && channel) {
-        this.subscribeToChannel(channel, event || 'lighthouse-subscription', observer)
+        this.subscribeToChannel(toValue(channel), event || 'lighthouse-subscription', observer)
       } else {
         forward(operation).subscribe({
           next: (data) => {
