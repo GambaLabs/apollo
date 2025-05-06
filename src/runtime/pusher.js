@@ -1,4 +1,5 @@
 import { ApolloLink, Observable } from '@apollo/client/core'
+import { getMainDefinition } from '@apollo/client/utilities'
 
 // Inspired by https://github.com/rmosolgo/graphql-ruby/blob/master/javascript_client/src/subscriptions/PusherLink.ts
 class PusherLink extends ApolloLink {
@@ -26,25 +27,33 @@ class PusherLink extends ApolloLink {
 
       let subscriptionChannel
 
-      forward(operation).subscribe({
-        next: (data) => {
-          // If the operation has the subscription channel, it's a subscription
-          subscriptionChannel =
-            data?.extensions?.lighthouse_subscriptions.channel ?? null
-          // No subscription found in the response, pipe data through
-          if (!subscriptionChannel) {
-            observer.next(data)
-            observer.complete()
+      const { query } = operation
+      const definition = getMainDefinition(query)
+      const isSubscription = definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
+      const { channel, event } = operation.getContext()
 
-            return
+      if (isSubscription && channel) {
+        this.subscribeToChannel(channel, event || 'lighthouse-subscription', observer)
+      } else {
+        forward(operation).subscribe({
+          next: (data) => {
+            // If the operation has the subscription channel, it's a subscription
+            subscriptionChannel =
+              data?.extensions?.lighthouse_subscriptions.channel ?? null
+            // No subscription found in the response, pipe data through
+            if (!subscriptionChannel) {
+              observer.next(data)
+              observer.complete()
+              return
+            }
+            const event = data?.extensions?.lighthouse_subscriptions.event ?? 'lighthouse-subscription'
+            this.subscribeToChannel(subscriptionChannel, event, observer)
+          },
+          error: (networkError) => {
+            observer.error(networkError)
           }
-          const event = data?.extensions?.lighthouse_subscriptions.event ?? 'lighthouse-subscription'
-          this.subscribeToChannel(subscriptionChannel, event, observer)
-        },
-        error: (networkError) => {
-          observer.error(networkError)
-        }
-      })
+        })
+      }
 
       // Return an object that will unsubscribe_if the query was a subscription
       return {

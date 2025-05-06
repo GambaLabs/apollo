@@ -47,13 +47,44 @@ const gqlGames = gql`
   }
   ${gameFields}
 `
-const gqlLiveBet = gql`subscription liveBet {
-  liveBet {
-    action_id
-    amount
-    display_name
+const gqlMe = gql`
+  query me {
+    me {
+      id
+      avatar
+      username
+      email
+      email_verified_at
+      created_at
+      updated_at
+      is_affiliate
+      is_sponsor
+      enable2fa
+    }
   }
-}`
+`
+const gqlLiveBet = gql`
+  subscription liveBet($gameId: ID, $userId: ID, $isHighRoller: Boolean) {
+    liveBet(gameId: $gameId, userId: $userId, isHighRoller: $isHighRoller) {
+      id
+      __typename
+      game
+      game_slug
+      detail_type
+      transaction_id
+      display_name
+      vip_level_name
+      processed_at
+      bet_multiplier
+      amount
+      currency_code
+      created_at
+      multiplier
+      payout
+      on_fire
+    }
+  }
+`
 
 const walletUpdated = gql`
 subscription walletUpdated {
@@ -66,7 +97,12 @@ subscription walletUpdated {
 `
 
 const { result: data, refetch: refresh } = useQuery(gqlGames, { first: 5 }, { clientId: 'gamba' })
-const { onResult, onError, result, stop, start } = useSubscription(gqlLiveBet, null, { clientId: 'gamba' })
+useQuery(gqlMe, {}, { clientId: 'gamba' })
+useSubscription(gqlLiveBet, {}, { clientId: 'gamba' })
+const { onResult, onError, result, stop, start } = useSubscription(gqlLiveBet, { userId: 7 }, {
+  clientId: 'gamba',
+  context: { channel: 'private-userLiveBet-7', event: 'liveBet' }
+})
 
 const subscribe = ref(false)
 

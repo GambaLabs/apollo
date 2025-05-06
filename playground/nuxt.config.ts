@@ -41,15 +41,16 @@ export default defineNuxtConfig({
       },
       gamba: {
         httpEndpoint: `${process.env.GRAPHQL_BASE_URL}/@`,
+        browserHttpEndpoint: '/_api/@',
         httpLinkOptions: {
           credentials: 'include'
         },
-        persistedQueries: false,
+        persistedQueries: true,
         requestMaxTimeout: 7000,
         pusher: {
           wsHost: process.env.PUSHER_WS_HOST!,
           cluster: process.env.PUSHER_CLUSTER!,
-          channelEndpoint: `${process.env.GRAPHQL_BASE_URL}/broadcasting/auth`,
+          channelEndpoint: '/_api/broadcasting/auth',
           pusherAppKey: process.env.PUSHER_APP_KEY!,
           forceTLS: !!process.env.PUSHER_FORCE_TLS!,
           activityTimeout: Number(process.env.PUSHER_ACTIVITY_TIMEOUT)!,
@@ -61,6 +62,17 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       graphqlBaseUrl: process.env.GRAPHQL_BASE_URL
+    }
+  },
+  routeRules: {
+    '/_api/**': {
+      proxy: {
+        to: `${process.env.GRAPHQL_BASE_URL}/**`,
+        headers: {
+          Origin: process.env.GRAPHQL_BASE_URL,
+          ...(process.env.NODE_ENV === 'development' ? { 'x-gamba-secure': process.env.X_GAMBA_SECURE } : {})
+        }
+      }
     }
   }
 })

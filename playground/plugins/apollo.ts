@@ -41,7 +41,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   })
   const fetchCsrf =
-    process.client && fetch(`${config.public.graphqlBaseUrl}/auth/csrf-token`, {
+    process.client && fetch('/_api/auth/csrf-token', {
       credentials: 'include'
     })
       .then(async (res) => {
@@ -65,8 +65,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (client !== 'gamba') { return }
 
     // Pass token to the `todos` client
-    token.value = '<secret_token>'
-    authToken.value = '<secret_token>'
+    token.value = '3511|kjgI51EyulprLLcnTFx5QUlXGTAGuagXkjkfdT3k8b3cd87b'
+    authToken.value = '3511|kjgI51EyulprLLcnTFx5QUlXGTAGuagXkjkfdT3k8b3cd87b'
   })
 
   nuxtApp.hook('apollo:csrf', async ({ client, token, forceUpdate }) => {
@@ -87,6 +87,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     // TODO: need to handle expire time
     token.value = csrfToken.value
+  })
+
+  nuxtApp.hook('apollo:link', ({ client, graphqlRequest }) => {
+    if (client !== 'gamba') { return }
   })
 
   // Nuxt Apollo error hook
