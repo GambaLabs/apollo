@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.32](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.31...v6.0.0-alpha.32) (2025-05-06)
+
+
+### Bug Fixes
+
+* **subscription:** toValue channel ([179daa3](https://github.com/GambaLabs/apollo/commit/179daa323ea61d4ecebbe2974d838f7108286f94))
+
 ## [6.0.0-alpha.31](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.30...v6.0.0-alpha.31) (2025-05-06)
 
 
