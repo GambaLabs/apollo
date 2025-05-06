@@ -1,5 +1,6 @@
 import { ApolloLink, Observable } from '@apollo/client/core'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { toValue } from '#imports'
 
 // Inspired by https://github.com/rmosolgo/graphql-ruby/blob/master/javascript_client/src/subscriptions/PusherLink.ts
 class PusherLink extends ApolloLink {
