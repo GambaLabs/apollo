@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.33](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.32...v6.0.0-alpha.33) (2025-05-06)
+
+
+### Bug Fixes
+
+* **puhser-js:** #import toValue ([030c1e3](https://github.com/GambaLabs/apollo/commit/030c1e3b6f93a3babbf59daf6c8003033af3312e))
+
 ## [6.0.0-alpha.32](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.31...v6.0.0-alpha.32) (2025-05-06)
 
 
