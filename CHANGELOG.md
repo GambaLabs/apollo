@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.31](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.30...v6.0.0-alpha.31) (2025-05-06)
+
+
+### Features
+
+* **subscription:** channel and event in context ([5b67585](https://github.com/GambaLabs/apollo/commit/5b675854555952f1b8ea5668b094678a7cfd4864))
+
 ## [6.0.0-alpha.30](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.29...v6.0.0-alpha.30) (2025-04-28)
 
 ## [6.0.0-alpha.29](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.28...v6.0.0-alpha.29) (2025-04-28)
