@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.34](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.33...v6.0.0-alpha.34) (2025-05-15)
+
+
+### Bug Fixes
+
+* **pusher-link:** unsubscribe for manual channel ([bf21cd6](https://github.com/GambaLabs/apollo/commit/bf21cd609414bcda2493c2aaa9eaec84c6cc228f))
+
 ## [6.0.0-alpha.33](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.32...v6.0.0-alpha.33) (2025-05-06)
 
 
