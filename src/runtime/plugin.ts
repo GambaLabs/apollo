@@ -220,9 +220,10 @@ export default defineNuxtPlugin((nuxtApp) => {
         pusherLink,
         ...(clientConfig.persistedQueries
           ? [
-              split(({ query }) => {
+              split(({ query, getContext }) => {
                 const definition = getMainDefinition(query)
-                return (definition.kind === 'OperationDefinition' && definition.operation === 'query')
+                const context = getContext()
+                return (definition.kind === 'OperationDefinition' && definition.operation === 'query' && !context.unpersisted)
               },
               ApolloLink.from([persistedLink, retryLink, httpEndLink]),
               ApolloLink.from([retryLink, httpEndLink]))
