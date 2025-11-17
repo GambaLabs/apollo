@@ -46,12 +46,6 @@ export default defineNuxtModule<ModuleOptions>({
         initial: 300,
         max: Infinity,
         jitter: true
-      },
-      attempts: {
-        max: 5,
-        retryIf (error, operation) {
-          return !!error
-        }
       }
     }
   },
