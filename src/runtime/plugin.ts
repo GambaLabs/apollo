@@ -127,7 +127,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         })
       }, clientConfig.requestMaxTimeout)
 
-      return $fetch(uri, {
+      return fetch(uri, {
         ...options,
         signal: abortController.signal
       }).finally(() => {
