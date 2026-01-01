@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0-alpha.46](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.45...v6.0.0-alpha.46) (2026-01-01)
+
+
+### Bug Fixes
+
+* **plugin:** use fetch function ([d0d04ed](https://github.com/GambaLabs/apollo/commit/d0d04eddcef5c105820b8913b493286755568a10))
+
 ## [6.0.0-alpha.45](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.44...v6.0.0-alpha.45) (2026-01-01)
 
 ## [6.0.0-alpha.44](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.43...v6.0.0-alpha.44) (2026-01-01)
