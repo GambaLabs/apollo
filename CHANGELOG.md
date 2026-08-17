@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1-alpha.2](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.36...v6.0.1-alpha.2) (2026-08-17)
+
+
+### Bug Fixes
+
+* handle null serialization ([#649](https://github.com/GambaLabs/apollo/issues/649)) ([db1ea86](https://github.com/GambaLabs/apollo/commit/db1ea867da7c434d5273a42a6ea7e7156d38adde)), closes [#636](https://github.com/GambaLabs/apollo/issues/636)
+* replace jiti import with createJiti for improved configuration handling ([bbb0349](https://github.com/GambaLabs/apollo/commit/bbb0349395526c14eacd465a4cfd7ef5a708e306))
+
 ## [6.0.0-alpha.36](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.35...v6.0.0-alpha.36) (2025-08-11)
 
 ## [6.0.0-alpha.35](https://github.com/GambaLabs/apollo/compare/v6.0.0-alpha.34...v6.0.0-alpha.35) (2025-08-11)
