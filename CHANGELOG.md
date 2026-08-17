@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1-alpha.6](https://github.com/GambaLabs/apollo/compare/v6.0.1-alpha.5...v6.0.1-alpha.6) (2026-08-17)
+
+
+### Bug Fixes
+
+* **plugin:** remove DefaultContext import ([93b1b09](https://github.com/GambaLabs/apollo/commit/93b1b097e2d6703a46da8d04d24d9c39289c45b9))
+
 ### [6.0.1-alpha.5](https://github.com/GambaLabs/apollo/compare/v6.0.1-alpha.4...v6.0.1-alpha.5) (2026-08-17)
 
 ### [6.0.1-alpha.4](https://github.com/GambaLabs/apollo/compare/v6.0.1-alpha.3...v6.0.1-alpha.4) (2026-08-17)
