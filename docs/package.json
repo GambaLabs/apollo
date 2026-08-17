@@ -1,16 +1,13 @@
 {
-  "name": "docus-starter",
-  "version": "0.1.0",
-  "private": true,
+  "name": "nuxt-apollo-docs",
   "scripts": {
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "generate": "nuxi build",
-    "preview": "nuxi preview"
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate"
   },
-  "devDependencies": {
-    "nuxt": "^3.0.0",
-    "@nuxt-themes/docus": "^1.1.3"
-  },
-  "packageManager": "yarn@1.22.19"
+  "dependencies": {
+    "docus": "^4.0.2",
+    "better-sqlite3": "^12.2.0",
+    "nuxt": "^4.0.2"
+  }
 }

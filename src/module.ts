@@ -1,5 +1,5 @@
-import { existsSync } from 'fs'
-import jiti from 'jiti'
+import { existsSync } from 'node:fs'
+import { createJiti } from 'jiti'
 import { defu } from 'defu'
 import { useLogger, addPlugin, addImports, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import GraphQLPlugin from '@rollup/plugin-graphql'
@@ -12,8 +12,9 @@ export type { ClientConfig, ErrorResponse }
 
 const logger = useLogger(name)
 
-async function readConfigFile (path: string): Promise<ClientConfig> {
-  return await jiti(import.meta.url, { esmResolve: true, interopDefault: true, requireCache: false })(path)
+async function readConfigFile(path: string): Promise<ClientConfig> {
+  const jiti = createJiti(import.meta.url)
+  return await jiti.import(path, { default: true })
 }
 
 export type ModuleOptions = NuxtApolloConfig
@@ -24,7 +25,7 @@ export default defineNuxtModule<ModuleOptions>({
     version,
     configKey: 'apollo',
     compatibility: {
-      nuxt: '^3.0.0-rc.9'
+      nuxt: '^3.0.0 || ^4.0.0'
     }
   },
   defaults: {
@@ -55,7 +56,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
   },
-  async setup (options, nuxt) {
+  async setup(options, nuxt) {
     if (!options.clients || !Object.keys(options.clients).length) {
       logger.warn('No apollo clients configured.')
       return
@@ -76,7 +77,7 @@ export default defineNuxtModule<ModuleOptions>({
     const clients: Record<string, ClientConfig> = {}
     const configPaths: Record<string, string> = {}
 
-    async function prepareClients () {
+    async function prepareClients() {
       // eslint-disable-next-line prefer-const
       for (let [k, v] of Object.entries(options.clients || {})) {
         if (typeof v === 'string') {
@@ -89,7 +90,9 @@ export default defineNuxtModule<ModuleOptions>({
           }
 
           v = resolvedConfig
-          if (!configPaths[k]) { configPaths[k] = path }
+          if (!configPaths[k]) {
+            configPaths[k] = path
+          }
         }
 
         v.authType = (v?.authType === undefined ? options.authType : v?.authType) || null
@@ -181,17 +184,20 @@ export default defineNuxtModule<ModuleOptions>({
       config.plugins = config.plugins || []
       config.plugins.push(GraphQLPlugin() as PluginOption)
 
-      if (!nuxt.options.dev) { config.define = { ...config.define, __DEV__: false } }
+      if (!nuxt.options.dev) {
+        config.define = { ...config.define, __DEV__: false }
+      }
     })
 
     nuxt.hook('webpack:config', (configs) => {
       for (const config of configs) {
-        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const hasGqlLoader = config.module.rules.some((rule: any) => rule?.use === 'graphql-tag/loader')
 
-        if (hasGqlLoader) { return }
+        if (hasGqlLoader) {
+          return
+        }
 
-        // @ts-ignore
         config.module.rules.push({
           test: /\.(graphql|gql)$/,
           use: 'graphql-tag/loader',
@@ -201,7 +207,9 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hook('builder:watch', async (_event, path) => {
-      if (!Object.values(configPaths).some(p => p.includes(path))) { return }
+      if (!Object.values(configPaths).some(p => p.includes(path))) {
+        return
+      }
 
       logger.log('[@nuxtjs/apollo] Reloading Apollo configuration')
 
@@ -217,16 +225,20 @@ export default defineNuxtModule<ModuleOptions>({
 export const defineApolloClient = (config: ClientConfig) => config
 
 export interface ModuleRuntimeConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apollo: NuxtApolloConfig<any>
 }
 
 export interface ModulePublicRuntimeConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apollo: NuxtApolloConfig<any>
 }
 
 declare module '@nuxt/schema' {
   interface NuxtConfig { ['apollo']?: Partial<ModuleOptions> }
   interface NuxtOptions { ['apollo']?: ModuleOptions }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface RuntimeConfig extends ModuleRuntimeConfig {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface PublicRuntimeConfig extends ModulePublicRuntimeConfig {}
 }

@@ -1,9 +1,10 @@
 import type { ClientOptions } from 'graphql-ws'
 import type { HttpOptions, DefaultOptions, InMemoryCacheConfig } from '@apollo/client'
 import type { CookieOptions } from 'nuxt/app'
+
 export type { ErrorResponse } from '@apollo/client/link/error'
 
-type CookieAttributes = Omit< CookieOptions, 'encode' | 'decode' | 'expires' | 'default'>;
+type CookieAttributes = Omit<CookieOptions, 'encode' | 'decode' | 'expires' | 'default'>
 
 export type Pusher = {
   cluster: string;
@@ -32,41 +33,41 @@ export type ClientConfig = {
    * The GraphQL endpoint.
    * @type {string}
    */
-  httpEndpoint: string;
+  httpEndpoint: string
 
   /**
    * Provide a GraphQL endpoint to be used client-side. Overrides `httpEndpoint`.
    * @type {string}
-   **/
-  browserHttpEndpoint?: string;
+   */
+  browserHttpEndpoint?: string
 
   /**
    * Provide additional configuration for the `HttpLink`.
    * See https://www.apollographql.com/docs/link/links/http.html#options
    * @type {HttpOptions}
-   **/
-  httpLinkOptions?: Omit<HttpOptions, 'uri'>;
+   */
+  httpLinkOptions?: Omit<HttpOptions, 'uri'>
 
   /**
    * Provide additional configuration for the `GraphQLWsLink`.
    * See https://github.com/enisdenjo/graphql-ws/blob/master/docs/interfaces/client.ClientOptions.md
-   **/
-  wsLinkOptions?: Omit<ClientOptions, 'url' | 'connectionParams'>;
+   */
+  wsLinkOptions?: Omit<ClientOptions, 'url' | 'connectionParams'>
 
   /**
    * Specify a websocket endpoint to be used for subscriptions.
    * The `wss` protocol is recommended in production.
    * @type {string}
-   **/
-  wsEndpoint?: string;
+   */
+  wsEndpoint?: string
 
   /**
    * Specify if the client should solely use WebSocket.
    * requires `wsEndpoint`.
    * @type {boolean}
    * @default false
-   **/
-  websocketsOnly?: boolean;
+   */
+  websocketsOnly?: boolean
 
   /**
    * Specify a pusher config to be used for subscriptions.
@@ -78,18 +79,18 @@ export type ClientConfig = {
    * Specify if the client should be able to connect to the Apollo Client Devtools in production mode.
    * @type {boolean}
    * @default false
-   **/
-  connectToDevTools?: boolean;
+   */
+  connectToDevTools?: boolean
 
   /**
    * Configure default options to be applied to the apollo client.
-   **/
-  defaultOptions?: DefaultOptions;
+   */
+  defaultOptions?: DefaultOptions
 
   /**
    * Configure the in-memory cache.
-   **/
-  inMemoryCacheOptions?: InMemoryCacheConfig;
+   */
+  inMemoryCacheOptions?: InMemoryCacheConfig
 
   /**
    * Specify the name under which the token will be stored.
@@ -97,29 +98,29 @@ export type ClientConfig = {
    * @type {string}
    * @default "apollo:<client-name>.token"
    */
-  tokenName?: string;
+  tokenName?: string
 
   /**
    * Specify if the auth token should be stored in `cookie` or `localStorage`.
    * `Cookie` storage is required for SSR.
    * @type {string}
    * @default "cookie"
-   **/
-  tokenStorage?: 'cookie' | 'localStorage';
+   */
+  tokenStorage?: 'cookie' | 'localStorage'
 
   /**
    * Specify the Authentication scheme.
    * @type {string}
    * @default "Bearer"
-   **/
-  authType?: string | null;
+   */
+  authType?: string | null
 
   /**
    * Name of the Authentication token header.
    * @type {string}
    * @default "Authorization"
    */
-  authHeader?: string;
+  authHeader?: string
 
   /**
    * Configuration for the auth cookie.
@@ -159,41 +160,41 @@ export interface NuxtApolloConfig<T = false> {
    * Determine if vue-apollo composables should be automatically imported.
    * @type {boolean}
    * @default true
-   **/
-  autoImports?: boolean;
+   */
+  autoImports?: boolean
 
   /**
    * Configuration of the Apollo clients.
-   **/
-  clients?: Record< string, T extends false ? string | ClientConfig : ClientConfig >;
+   */
+  clients?: Record<string, T extends false ? string | ClientConfig : ClientConfig>
 
   /**
    * Default options to be applied to all Apollo clients.
    * This is useful for setting global defaults, and is overridden by `defaultOptions` passed directly to clients.
-   **/
-  defaultOptions?: DefaultOptions;
+   */
+  defaultOptions?: DefaultOptions
 
   /**
    * Pass cookies from the browser to the GraphQL API in SSR mode.
    *
    * @type boolean
    * @default true
-   * */
-  proxyCookies?: boolean;
+   */
+  proxyCookies?: boolean
 
   /**
    * Specify the Authentication scheme.
    * @type {string}
    * @default 'Bearer'
-   **/
-  authType?: string;
+   */
+  authType?: string
 
   /**
    * Name of the Authentication token header.
    * @type {string}
    * @default "Authorization"
    */
-  authHeader?: string;
+  authHeader?: string
 
   /**
    * Name of the CSRF token header.
@@ -214,13 +215,13 @@ export interface NuxtApolloConfig<T = false> {
    * `Cookie` storage is required for SSR.
    * @type {string}
    * @default "cookie"
-   **/
-  tokenStorage?: 'cookie' | 'localStorage';
+   */
+  tokenStorage?: 'cookie' | 'localStorage'
 
   /**
    * Configuration for the auth cookie.
-   **/
-  cookieAttributes?: CookieAttributes;
+   */
+  cookieAttributes?: CookieAttributes
 
   /**
    * Apollo client awareness instructs the client to send two additional headers

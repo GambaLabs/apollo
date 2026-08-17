@@ -56,7 +56,9 @@ export default defineNuxtPlugin((nuxtApp) => {
       .catch(e => Promise.reject(e))
   // Nuxt Apollo auth hook
   nuxtApp.hook('apollo:auth', ({ client, token }) => {
-    if (client !== 'todos') { return }
+    if (client !== 'todos') {
+      return
+    }
 
     // Pass token to the `todos` client
     token.value = '<secret_token>'
@@ -95,7 +97,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Nuxt Apollo error hook
   nuxtApp.hook('apollo:error', (error: ErrorResponse) => {
-    // eslint-disable-next-line no-console
     console.log('Apollo Error Handler', error)
   })
 })

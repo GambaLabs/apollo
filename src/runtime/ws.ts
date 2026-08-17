@@ -2,10 +2,10 @@ import { createClient } from 'graphql-ws'
 import type { Client, ClientOptions } from 'graphql-ws'
 
 export interface RestartableClient extends Client {
-  restart(): void;
+  restart(): void
 }
 
-export default function createRestartableClient (options: ClientOptions): RestartableClient {
+export default function createRestartableClient(options: ClientOptions): RestartableClient {
   let restartRequested = false
   let restart = () => {
     restartRequested = true
@@ -15,13 +15,13 @@ export default function createRestartableClient (options: ClientOptions): Restar
     ...options,
     on: {
       ...options.on,
-      opened: (socket: any) => {
+      opened: (socket) => {
         options.on?.opened?.(socket)
 
         restart = () => {
-          if (socket.readyState === WebSocket.OPEN) {
+          if ((socket as WebSocket).readyState === WebSocket.OPEN) {
             // if the socket is still open for the restart, do the restart
-            socket.close(4205, 'Client Restart')
+            (socket as WebSocket).close(4205, 'Client Restart')
           } else {
             // otherwise the socket might've closed, indicate that you want
             // a restart on the next opened event

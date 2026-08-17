@@ -1,7 +1,9 @@
-export default defineNuxtConfig({
-  extends: ['@nuxt-themes/docus'],
+import { defineNuxtConfig } from 'nuxt/config'
 
-  colorMode: {
-    preference: 'dark'
+export default defineNuxtConfig({
+  extends: ['docus'],
+
+  nitro: {
+    static: true
   }
 })

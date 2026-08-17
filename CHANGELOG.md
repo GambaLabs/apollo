@@ -221,6 +221,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 * Merge pull request #218 from nuxt-community/extend-errorHandler ([d5edade](https://github.com/GambaLabs/apollo/commit/d5edadef4489aee6d48fcfede09ebf5188bfb673)), closes [#218](https://github.com/GambaLabs/apollo/issues/218)
+* replace jiti import with createJiti for improved configuration handling ([bbb0349](https://github.com/nuxt-modules/apollo-module/commit/bbb0349395526c14eacd465a4cfd7ef5a708e306))
 
 ## [5.0.0-alpha.3](https://github.com/nuxt-modules/apollo-module/compare/v5.0.0-alpha.2...v5.0.0-alpha.3) (2022-10-19)
 
