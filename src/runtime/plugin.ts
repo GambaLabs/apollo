@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createApolloProvider } from '@vue/apollo-option'
 import { ApolloClients, provideApolloClients } from '@vue/apollo-composable'
-import { ApolloClient, ApolloLink, createHttpLink, DefaultContext, InMemoryCache, split } from '@apollo/client/core'
+import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, split } from '@apollo/client/core'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
 import { sha256 } from 'crypto-hash'
@@ -100,8 +100,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     })
 
-    const contextLink = setContext(async (graphqlRequest, prevContext: DefaultContext) => {
-      const context = ref<null | DefaultContext>(null)
+    const contextLink = setContext(async (graphqlRequest, prevContext) => {
+      const context = ref(null)
       await nuxtApp.callHook('apollo:link', { prevContext, context, client: key, graphqlRequest })
 
       if (!context.value) { return }
