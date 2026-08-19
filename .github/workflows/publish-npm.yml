@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        node-version: [24]
+        node-version: [22]
     steps:
       - uses: actions/checkout@v6
       - name: Install pnpm and Node.js
