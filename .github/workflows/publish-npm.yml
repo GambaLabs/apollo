@@ -5,23 +5,29 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        node-version: [22]
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install pnpm and Node.js
-        uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2.0.0
-        with:
-          runtime: node@${{ matrix.node-version }}
-          cache: true
+    publish:
+      runs-on: 8-core
 
-      - name: prepare
-        run: pnpm dev:prepare
+      steps:
+        - name: Check out Git repository
+        - uses: actions/checkout@v4
 
-      - name: Publish
-        run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        - name: Set up Node.js
+          uses: actions/setup-node@v1
+          with:
+            node-version: 22.22.0
+
+        - name: Set up pnpm
+        - uses: pnpm/action-setup@v4
+          with:
+            version: 10.13.1
+
+        - run: pnpm install --frozen-lockfile
+
+        - name: prepare
+          run: pnpm dev:prepare
+
+        - name: Publish
+          run: pnpm publish --no-git-checks
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
