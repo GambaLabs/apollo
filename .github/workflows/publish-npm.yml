@@ -5,8 +5,11 @@ on:
       - main
 
 jobs:
-    publish:
-      runs-on: 8-core
+    build:
+      runs-on: ubuntu-24.04
+      strategy:
+        matrix:
+          node-version: [22]
 
       steps:
         - name: Check out Git repository
