@@ -219,9 +219,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       nuxtApp.callHook('apollo:error', err)
     })
 
-    const retryLink = new RetryLink({
+    const baseRetryLink = new RetryLink({
       ...clientConfig.retryOptions
     })
+    const retryLink = split(({query}) => {
+      const definition = getMainDefinition(query)
+      return (definition.kind === 'OperationDefinition' && definition.operation === 'query')
+    }, baseRetryLink)
 
     const link = pusherLink
       ? ApolloLink.from([
